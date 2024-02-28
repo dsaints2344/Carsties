@@ -22,7 +22,7 @@ namespace SearchService.Data
 
             if (count == 0)
             {
-                Console.WriteLine("No data - will attempt to sedd");
+                Console.WriteLine("No data - will attempt to seed");
 
                 var itemData = await File.ReadAllTextAsync("Data/auctions.json");
 
