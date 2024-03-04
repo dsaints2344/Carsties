@@ -1,7 +1,12 @@
 ﻿
 using AuctionService.Data.Enums;
+using AuctionService.DTOs;
 using AuctionService.Entities;
+using AutoMapper;
+using Contracts;
+using MassTransit;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace AuctionService.Data
 {
@@ -9,12 +14,14 @@ namespace AuctionService.Data
     {
         public static void InitDb(WebApplication app)
         {
-            using var socpe = app.Services.CreateScope();
+            using var scope = app.Services.CreateScope();
 
-            seedData(socpe.ServiceProvider.GetService<AuctionDbContext>());
+            seedData(scope.ServiceProvider.GetService<AuctionDbContext>(), 
+                scope.ServiceProvider.GetService<IMapper>()!, 
+                scope.ServiceProvider.GetService<ISendEndpointProvider>()!);
         }
 
-        private static void seedData(AuctionDbContext? context)
+        private static async void seedData(AuctionDbContext? context, IMapper mapper, ISendEndpointProvider sendEndpointProvider)
         {
             if (context != null)
             {
@@ -25,6 +32,9 @@ namespace AuctionService.Data
                     Console.WriteLine("Already have data - no need to seed");
                     return;
                 }
+                
+               
+                var endpoint = await sendEndpointProvider.GetSendEndpoint(new Uri("queue:search-auction-created"));
 
                 var auctions = new List<Auction>() 
                 {
@@ -208,6 +218,13 @@ namespace AuctionService.Data
                         }
                 };
 
+                foreach (Auction auction in auctions)
+                {
+                    var auctionDto = mapper.Map<AuctionDto>(auction);
+                    var auctionToPublish = mapper.Map<AuctionCreated>(auctionDto);
+
+                    await endpoint.Send(auctionToPublish);
+                } 
                 context.AddRange(auctions);
                 context.SaveChanges();
             }
