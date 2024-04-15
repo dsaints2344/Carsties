@@ -12,7 +12,7 @@ namespace IdentityService.Pages.Account.Register
     [AllowAnonymous]
     public class Index : PageModel
     {
-        private UserManager<ApplicationUser> _userManager;
+        public UserManager<ApplicationUser> _userManager { get; set; }
 
         public Index(UserManager<ApplicationUser> userManager)
         {
@@ -25,7 +25,7 @@ namespace IdentityService.Pages.Account.Register
         [BindProperty]
         public bool RegisterSuccess { get; set; }
 
-        public IActionResult OnGet(string returnUrl)
+        public IActionResult OnGet(string? returnUrl)
         {
             Input = new RegisterViewModel { ReturnUrl = returnUrl };
 
@@ -34,9 +34,12 @@ namespace IdentityService.Pages.Account.Register
 
         public async Task<IActionResult> OnPost()
         {
-            if (Input.Button != "register") return Redirect("~/");
+            if (Input.Button != "register")
+            {
+                return Redirect("~/");
+            }
 
-            if (ModelState.IsValid) 
+            if (ModelState.IsValid)
             {
                 var user = new ApplicationUser
                 {
@@ -45,13 +48,13 @@ namespace IdentityService.Pages.Account.Register
                     EmailConfirmed = true
                 };
 
-                var result = await _userManager.CreateAsync(user, Input.Password!);
+                var result = await _userManager.CreateAsync(user, Input.Password);
 
                 if (result.Succeeded)
                 {
                     await _userManager.AddClaimsAsync(user, new Claim[]
                     {
-                        new Claim(JwtClaimTypes.Name, Input.FullName!)
+                        new Claim(JwtClaimTypes.Name, Input.FullName)
                     });
 
                     RegisterSuccess = true;
@@ -59,7 +62,6 @@ namespace IdentityService.Pages.Account.Register
             }
 
             return Page();
-
         }
     }
 }

@@ -5,7 +5,7 @@ using IdentityService.Models;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 
-namespace IdentityService.Folder
+namespace IdentityService.Services
 {
     public class CustomProfileService : IProfileService
     {
@@ -13,21 +13,21 @@ namespace IdentityService.Folder
 
         public CustomProfileService(UserManager<ApplicationUser> userManager)
         {
-            _userManager = userManager;
+            _userManager = userManager;    
         }
 
         public async Task GetProfileDataAsync(ProfileDataRequestContext context)
         {
             var user = await _userManager.GetUserAsync(context.Subject);
-            var existingClaims = await _userManager.GetClaimsAsync(user);
+            var existingClaims = await _userManager.GetClaimsAsync(user!);
 
-            var claims = new List<Claim> { new Claim( "username", user.UserName!) };
+            var claims = new List<Claim>
+            {
+                new Claim("username", user!.UserName!)
+            };
 
             context.IssuedClaims.AddRange(claims);
             context.IssuedClaims.Add(existingClaims.FirstOrDefault(x => x.Type == JwtClaimTypes.Name)!);
-
-
-
         }
 
         public Task IsActiveAsync(IsActiveContext context)

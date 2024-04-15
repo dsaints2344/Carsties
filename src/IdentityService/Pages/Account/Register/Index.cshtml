@@ -8,7 +8,7 @@
         <div class="col-6 offset-3">
             <div class="card">
                 <div class="card-header">
-                    <h2>Register</h2>
+                    Register
                 </div>
                 <div class="card-body">
                     <form asp-page="/Account/Register/Index">
@@ -34,8 +34,8 @@
                             <input type="password" class="form-control" placeholder="Password" asp-for="Input.Password" autocomplete="off">
                         </div>
 
-                        <a class="pb-2 d-block" asp-page="../Login/Index" asp-route-returnUrl="@Model.Input.ReturnUrl">
-                            Already registered? Login Here
+                        <a class="pb-2 d-block" asp-page="../Login/Index" asp-route-returnUurl="@Model.Input.ReturnUrl">
+                            Already Registered? Login here
                         </a>
 
                         <button class="btn btn-primary" name="Input.Button" value="register">Register</button>
@@ -43,10 +43,10 @@
                     </form>
                 </div>
 
-                @if(Model.RegisterSuccess)
+                @if (Model.RegisterSuccess)
                 {
                     <div class="alert alert-success mt-2">
-                        <strong>Successfully registered</strong> - You can now log in
+                        <strong>Successfuly Registered</strong> - You can now login
                     </div>
                 }
             </div>

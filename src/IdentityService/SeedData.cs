@@ -15,12 +15,10 @@ namespace IdentityService
             using var scope = app.Services.GetRequiredService<IServiceScopeFactory>().CreateScope();
             var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
             context.Database.Migrate();
+
             var userMgr = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
 
-            if (userMgr.Users.Any())
-            {
-                return;
-            }
+            if (userMgr.Users.Any()) return;
 
             var alice = userMgr.FindByNameAsync("alice").Result;
             if (alice == null)
@@ -68,6 +66,7 @@ namespace IdentityService
 
                 result = userMgr.AddClaimsAsync(bob, new Claim[]{
                                 new Claim(JwtClaimTypes.Name, "Bob Smith")
+                                
                             }).Result;
                 if (!result.Succeeded)
                 {
