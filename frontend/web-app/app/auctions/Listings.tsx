@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { Auction, PagedResult } from "@/types";
 import AuctionCard from "./AuctionCard";
 
-const getData = async () => {
+const getData = async (): Promise<PagedResult<Auction>> => {
     const res = await fetch('http://localhost:6001/search?pageSize=10');
 
     if (!res.ok){

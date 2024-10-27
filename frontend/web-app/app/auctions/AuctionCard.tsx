@@ -1,9 +1,9 @@
 import CountdownTimer from "./CountdownTimer";
 import CarImage from "./CardImage";
+import { Auction } from "@/types";
 
 type Props = {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    auction: any;
+    auction: Auction;
 };
 
 const AuctionCard = ({auction}: Props) => {
