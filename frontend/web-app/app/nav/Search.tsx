@@ -2,11 +2,16 @@
 
 import { FaSearch } from "react-icons/fa";
 import { useParamsStore } from "../hooks/useParamsStore";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const Search = () => {
     const setParams = useParamsStore(state => state.setParams);
+    const searchTerm = useParamsStore(state => state.searchTerm);
     const [value, setValue] = useState("");
+
+    useEffect(() => {
+        setValue(searchTerm || "");
+    }, [searchTerm]);
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const onChange = (event: any) => {
