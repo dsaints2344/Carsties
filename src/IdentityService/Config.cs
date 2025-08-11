@@ -39,7 +39,7 @@ namespace IdentityService
                    },
                    AllowedGrantTypes = GrantTypes.CodeAndClientCredentials,
                    RequirePkce = true,
-                   RedirectUris = {"http://localhsot:300/api/auth/callback/id-server"},
+                   RedirectUris = {"http://localhost:3000/api/auth/callback/id-server"},
                    AllowOfflineAccess = true,
                    AllowedScopes = {"openid", "profile", "auctionApp"},
                    AccessTokenLifetime = 3600*24*30,

@@ -6,7 +6,7 @@ import { signIn } from "next-auth/react";
 
 
 const LoginButton = () => {
-  return <Button outline onClick={() => signIn("id-server", { redirectTo: "/" })}>Login</Button>;
+  return <Button outline onClick={() => signIn('id-server', { redirectTo: "/" })}>Login</Button>;
 };
 
 export default LoginButton;

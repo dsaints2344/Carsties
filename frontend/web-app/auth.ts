@@ -5,12 +5,12 @@ import DuendeIDS6Provider from "next-auth/providers/duende-identity-server6"
 export const { handlers, signIn, signOut } = NextAuth({
   providers: [
     DuendeIDS6Provider({
-        id: "id-server",
+        id: 'id-server',
         clientId: "nextApp",
         clientSecret: "secret",
         issuer: "http://localhost:5001",
-        idToken: true,
-        authorization: { params: { scope: "openid profile auctionApp" } }
+        authorization: { params: { scope: 'openid profile auctionApp' } },
+        idToken: true
     } as OIDCConfig<Profile>),
   ],
 });
