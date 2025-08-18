@@ -7,12 +7,31 @@ import { signOut } from "next-auth/react";
 import Link from "next/link";
 import { AiFillCar, AiFillTrophy, AiOutlineLogout } from "react-icons/ai";
 import { HiCog, HiUser, HiChevronDown } from "react-icons/hi";
+import { useParamsStore } from "../hooks/useParamsStore";
+import { usePathname, useRouter } from "next/navigation";
 
 type Props = { user: Profile };
 
 const UserActions = ({ user }: Props) => {
   const displayName =
     (user?.username || user.name || user.email || "User");
+
+  const router = useRouter();
+  const pathname = usePathname();
+  const setParams = useParamsStore(state => state.setParams);
+  const setWinner = () => {
+    setParams({winner: user.username, seller: undefined});
+    if (pathname !== "/") {
+      router.push("/");
+    }
+  }
+
+  const setSeller = () => {
+    setParams({seller: user.username, winner: undefined});
+    if (pathname !== "/") {
+      router.push("/");
+    }
+  }
 
   return (
     <Dropdown
@@ -28,11 +47,11 @@ const UserActions = ({ user }: Props) => {
         </button>
       )}
     >
-      <DropdownItem as={Link} href="/my-auctions" icon={HiUser}>
+      <DropdownItem icon={HiUser} onClick={setSeller}>
         My Auctions
       </DropdownItem>
 
-      <DropdownItem as={Link} href="/auctions/won" icon={AiFillTrophy}>
+      <DropdownItem icon={AiFillTrophy} onClick={setWinner}>
         Auctions won
       </DropdownItem>
 
