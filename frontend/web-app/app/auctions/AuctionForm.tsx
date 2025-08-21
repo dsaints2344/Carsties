@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { FieldValues, useForm } from "react-hook-form";
 import Input from "../components/Input";
 import { useEffect } from "react";
+import DateInput from "../components/DateInput";
 
 const AuctionForm = () => {
     const router = useRouter();
@@ -78,11 +79,12 @@ const AuctionForm = () => {
                             required: "Reserve Price is required"
                         }}
                     />
-                    <Input
+                    <DateInput
                         control={control}
-                        name="end"
+                        name="auctionEnd"
                         label="Auction end date/time"
-                        type="date"
+                        showTimeSelect
+                        dateFormat={"dd MMMM yyyy h:mm a"}
                         rules={{
                             required: "Auction end date/time is required"
                         }}
