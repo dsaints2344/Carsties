@@ -10,7 +10,7 @@ const AuctionForm = () => {
     const router = useRouter();
     const { control, handleSubmit, setFocus, 
         formState: { isSubmitting, isValid, isDirty }
-    } = useForm();
+    } = useForm({mode: "onTouched"});
 
     useEffect(() => {
         setFocus("make");
@@ -23,7 +23,6 @@ const AuctionForm = () => {
 
     return (
         <form className="flex flex-col mt3" onSubmit={handleSubmit(onSubmit)}>
-            <div className="mb-3 block">
                 <Input
                     control={control}
                     name="make"
@@ -32,8 +31,6 @@ const AuctionForm = () => {
                         required: "Make is required"
                     }}
                 />
-            </div>
-            <div className="mb-3 block">
                 <Input
                     control={control}
                     name="model"
@@ -42,7 +39,55 @@ const AuctionForm = () => {
                         required: "Model is required"
                     }}
                 />
-            </div>
+                <Input
+                    control={control}
+                    name="color"
+                    label="Color"
+                    rules={{
+                        required: "Color is required"
+                    }}
+                />
+
+                <div className="grid grid-cols-2 gap-3">
+                    <Input
+                        control={control}
+                        name="year"
+                        label="Year"
+                        type="number"
+                        rules={{
+                            required: "Year is required"
+                        }}
+                    />
+                    <Input
+                        control={control}
+                        name="mileage"
+                        label="Mileage"
+                        type="number"
+                        rules={{
+                            required: "Mileage is required"
+                        }}
+                    />
+                </div>
+                <div className="grid grid-cols-2 gap-3">
+                    <Input
+                        control={control}
+                        name="reservePrice"
+                        label="Reserve Price (enter 0 if no reserve)"
+                        type="number"
+                        rules={{
+                            required: "Reserve Price is required"
+                        }}
+                    />
+                    <Input
+                        control={control}
+                        name="end"
+                        label="Auction end date/time"
+                        type="date"
+                        rules={{
+                            required: "Auction end date/time is required"
+                        }}
+                    />
+                </div>
 
             <div className="flex justify-between">
                 <Button  
