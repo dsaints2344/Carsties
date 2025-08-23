@@ -2,6 +2,7 @@
 
 import { fetchWrapper } from "@/lib/fetchWrapper";
 import { Auction, PagedResult } from "@/types";
+import { FieldValues } from "react-hook-form";
 
 const getData = async (query: string): Promise<PagedResult<Auction>> => {
     return fetchWrapper.get(`search${query}`);
@@ -16,4 +17,8 @@ const updateAuctionTest = async (): Promise<{status: number, message: string}> =
 
 }
 
-export { getData, updateAuctionTest };
+const createAuction = (data: FieldValues) => {
+    return fetchWrapper.post(`auctions`, data);
+}
+
+export { getData, updateAuctionTest, createAuction };

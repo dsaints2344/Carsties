@@ -6,6 +6,7 @@ import { FieldValues, useForm } from "react-hook-form";
 import Input from "../components/Input";
 import { useEffect } from "react";
 import DateInput from "../components/DateInput";
+import { createAuction } from "../actions/auctionActions";
 
 const AuctionForm = () => {
     const router = useRouter();
@@ -18,8 +19,17 @@ const AuctionForm = () => {
     }, [setFocus])
 
 
-    const onSubmit = (data: FieldValues) => {
-        console.log(data);
+    const onSubmit = async (data: FieldValues) => {
+        try {
+            const res = await createAuction(data);
+            if (res.reserror) {
+               throw new Error(res.error); 
+            }
+            router.push(`/auctions/details/${res.id}`)
+        } catch (error) {
+            console.log("Error creating auction:", error);
+        }
+        
     }
 
     return (
