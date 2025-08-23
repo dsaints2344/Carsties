@@ -22,7 +22,7 @@ const AuctionForm = () => {
     const onSubmit = async (data: FieldValues) => {
         try {
             const res = await createAuction(data);
-            if (res.reserror) {
+            if (res.error) {
                throw new Error(res.error); 
             }
             router.push(`/auctions/details/${res.id}`)
@@ -58,6 +58,15 @@ const AuctionForm = () => {
                         required: "Color is required"
                     }}
                 />
+                <Input
+                    control={control}
+                    name="imageUrl"
+                    label="Image URL"
+                    rules={{
+                        required: "Image URL is required"
+                    }}
+                />
+
 
                 <div className="grid grid-cols-2 gap-3">
                     <Input
