@@ -2,6 +2,7 @@ import { getDetailedViewData } from "@/app/actions/auctionActions";
 import Heading from "@/app/components/Heading";
 import CountdownTimer from "../../CountdownTimer";
 import CarImage from "../../CardImage";
+import DetailedSpecs from "./DetailedSpecs";
 
 const Details = async ({ params }: { params: Promise<{ id: string }> }) => {
     const { id } = await params;
@@ -27,7 +28,9 @@ const Details = async ({ params }: { params: Promise<{ id: string }> }) => {
                 </div>
             </div>
 
-            <div className="mt-3 grid grid-cols-1 rounded-lg"></div>
+            <div className="mt-3 grid grid-cols-1 rounded-lg">
+                <DetailedSpecs auction={data} />
+            </div>
         </>
     );
 }
