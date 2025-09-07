@@ -56,11 +56,10 @@ const post = async (url: string, body: unknown) => {
        
 }
 
-const del = async (url: string, body: unknown) => {
+const del = async (url: string) => {
     const requestOptions = {
         method: "DELETE",
-        headers: await getheaders(),
-        body: JSON.stringify(body)
+        headers: await getheaders()
     };
 
     const response = await fetch(`${baseUrl}${url}`, requestOptions);
