@@ -10,7 +10,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         clientSecret: "secret",
         issuer: "http://localhost:5001",
         authorization: { params: { scope: 'openid profile auctionApp' } },
-        idToken: true
+        idToken: true,
+        userinfo: true,
+
     } as OIDCConfig<Omit<Profile, "username">>),
   ],
   callbacks: {
@@ -21,9 +23,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       if (account && account.access_token) {
         token.accessToken = account.access_token;
       }
-
       if (profile) {
-        token.username = profile.name ?? "";
+        token.username = profile.username ?? "";
         
       }
       return token;

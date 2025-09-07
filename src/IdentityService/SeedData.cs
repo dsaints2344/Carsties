@@ -36,7 +36,8 @@ namespace IdentityService
                 }
 
                 result = userMgr.AddClaimsAsync(alice, new Claim[]{
-                                new Claim(JwtClaimTypes.Name, "Alice Smith")
+                                new Claim(JwtClaimTypes.Name, "Alice Smith"),
+                                new Claim(JwtClaimTypes.PreferredUserName, "alice")
                             }).Result;
                 if (!result.Succeeded)
                 {
@@ -65,8 +66,8 @@ namespace IdentityService
                 }
 
                 result = userMgr.AddClaimsAsync(bob, new Claim[]{
-                                new Claim(JwtClaimTypes.Name, "Bob Smith")
-                                
+                                new Claim(JwtClaimTypes.Name, "Bob Smith"),
+                                new Claim(JwtClaimTypes.PreferredUserName, "bob")
                             }).Result;
                 if (!result.Succeeded)
                 {
