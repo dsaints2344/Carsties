@@ -25,4 +25,8 @@ const getDetailedViewData = async (id: string): Promise<Auction> => {
     return fetchWrapper.get(`auctions/${id}`);
 }
 
-export { getData, updateAuctionTest, createAuction, getDetailedViewData };
+const updateAuction = async (data: FieldValues, id: string) => {
+    return fetchWrapper.put(`auctions/${id}`, data);
+}
+
+export { getData, updateAuctionTest, createAuction, getDetailedViewData, updateAuction };

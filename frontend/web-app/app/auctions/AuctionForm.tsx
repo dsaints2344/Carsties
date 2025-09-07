@@ -1,32 +1,62 @@
 "use client";
 
 import { Button, Spinner } from "flowbite-react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { FieldValues, useForm } from "react-hook-form";
 import Input from "../components/Input";
 import { useEffect } from "react";
 import DateInput from "../components/DateInput";
-import { createAuction } from "../actions/auctionActions";
+import { createAuction, updateAuction } from "../actions/auctionActions";
 import toast from "react-hot-toast";
+import { Auction } from "@/types";
 
-const AuctionForm = () => {
+type Props = {
+    auction?: Auction
+};
+
+const AuctionForm = ({ auction }: Props) => {
     const router = useRouter();
-    const { control, handleSubmit, setFocus, 
+    const pathName = usePathname();
+
+    const { control, handleSubmit, setFocus, reset, 
         formState: { isSubmitting, isValid, isDirty }
     } = useForm({mode: "onTouched"});
 
     useEffect(() => {
+        if (auction) {
+            const { make, model, color, year, mileage } = auction;
+            reset({
+                make,
+                model,
+                color,
+                year,
+                mileage
+            });
+        }
         setFocus("make");
-    }, [setFocus])
+    }, [setFocus, reset, auction])
 
 
     const onSubmit = async (data: FieldValues) => {
         try {
-            const res = await createAuction(data);
+            let id = "";
+            let res;
+
+            if (pathName === "/auctions/create") {
+                res = await (id ? updateAuction(data, id) : createAuction(data));
+                res = res.id;
+            } else {
+                if (auction) {
+                    res = await updateAuction(data, auction.id);
+                    id = auction.id;
+                }
+            }
+            
             if (res.error) {
                throw  res.error; 
             }
-            router.push(`/auctions/details/${res.id}`)
+
+            router.push(`/auctions/details/${id}`)
         } catch (error : any) {
             toast.error(error.status + " " + error.message);
         }
@@ -59,14 +89,41 @@ const AuctionForm = () => {
                         required: "Color is required"
                     }}
                 />
-                <Input
-                    control={control}
-                    name="imageUrl"
-                    label="Image URL"
-                    rules={{
-                        required: "Image URL is required"
-                    }}
-                />
+
+                {pathName === "/auctions/create" && (
+                    <>
+                        <Input
+                        control={control}
+                        name="imageUrl"
+                        label="Image URL"
+                        rules={{
+                            required: "Image URL is required"
+                        }}
+                        />
+
+                        <div className="grid grid-cols-2 gap-3">
+                            <Input
+                                control={control}
+                                name="reservePrice"
+                                label="Reserve Price (enter 0 if no reserve)"
+                                type="number"
+                                rules={{
+                                    required: "Reserve Price is required"
+                                }}
+                            />
+                            <DateInput
+                                control={control}
+                                name="auctionEnd"
+                                label="Auction end date/time"
+                                showTimeSelect
+                                dateFormat={"dd MMMM yyyy h:mm a"}
+                                rules={{
+                                    required: "Auction end date/time is required"
+                                }}
+                            />
+                        </div>
+                    </>
+                )}
 
 
                 <div className="grid grid-cols-2 gap-3">
@@ -86,27 +143,6 @@ const AuctionForm = () => {
                         type="number"
                         rules={{
                             required: "Mileage is required"
-                        }}
-                    />
-                </div>
-                <div className="grid grid-cols-2 gap-3">
-                    <Input
-                        control={control}
-                        name="reservePrice"
-                        label="Reserve Price (enter 0 if no reserve)"
-                        type="number"
-                        rules={{
-                            required: "Reserve Price is required"
-                        }}
-                    />
-                    <DateInput
-                        control={control}
-                        name="auctionEnd"
-                        label="Auction end date/time"
-                        showTimeSelect
-                        dateFormat={"dd MMMM yyyy h:mm a"}
-                        rules={{
-                            required: "Auction end date/time is required"
                         }}
                     />
                 </div>

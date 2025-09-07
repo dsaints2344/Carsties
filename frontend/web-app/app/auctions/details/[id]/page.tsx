@@ -25,7 +25,7 @@ const Details = async ({ params }: { params: Promise<{ id: string }> }) => {
             </div>
             
             <div className="grid grid-cols-2 gap-6 mt-3">
-                <div className="relative w-full bg-gray-200 aspect-[4/3]
+                <div className="relative w-full bg-gray-200 aspect-[16/10]
                     rounded-lg overflow-hidden">
                         <CarImage imageUrl={data.imageUrl}/>
                 </div>
