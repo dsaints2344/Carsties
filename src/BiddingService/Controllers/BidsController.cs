@@ -35,7 +35,7 @@ namespace BiddingService.Controllers
             if (auction.AuctionEnd < DateTime.UtcNow)
             {
                 bid.BidStatus = BidStatus.Finished;
-            } 
+            }
             else
             {
                 var highestBid = await DB.Find<Bid>()
@@ -56,8 +56,20 @@ namespace BiddingService.Controllers
             }
 
             await DB.SaveAsync(bid);
-            
+
             return Ok(bid);
         }
+
+        [HttpGet("{auctionId}")]
+        public async Task<ActionResult<List<Bid>>> GetBidsForAuction(string auctionId)
+        {
+            var bids = await DB.Find<Bid>()
+                .Match(b => b.AuctionId == auctionId)
+                .Sort(b => b.Descending(b => b.BidTime))
+                .ExecuteAsync();
+
+            return Ok(bids);
+        }
     }
+
 }
