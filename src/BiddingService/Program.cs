@@ -12,7 +12,7 @@ builder.Services.AddControllers();
 
 builder.Services.AddMassTransit(x =>
 {
-    x.AddConsumer<AuctionCreatedConsumer>();
+    x.AddConsumersFromNamespaceContaining<AuctionCreatedConsumer>();
 
     x.SetEndpointNameFormatter(new KebabCaseEndpointNameFormatter("bids", false));
 
